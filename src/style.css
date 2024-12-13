@@ -1,0 +1,73 @@
+.nonogram {
+    display: grid;
+    grid-template-areas: '. horizontal' 'vertical field';
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+}
+
+.field,
+.horizontal,
+.vertical {
+    box-sizing: content-box;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 20px);
+    border: solid 1px black;
+}
+
+.field {
+    grid-area: field;
+}
+
+.horizontal {
+    grid-area: horizontal;
+    border-bottom: none;
+}
+
+.vertical {
+    grid-area: vertical;
+    border-right: none;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border-bottom: solid 1px black;
+    border-right: solid 1px black;
+}
+
+.cell.border-x {
+    border-left: solid 1px black;
+}
+
+.cell.border-y {
+    border-top: solid 1px black;
+}
+
+.cell.fill {
+    background-color: black;
+}
+
+.cell.none::before {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 1px;
+    width: 28px;
+    background-color: black;
+    transform: rotateZ(45deg);
+}
+
+.cell.none::after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 1px;
+    width: 28px;
+    background-color: black;
+    transform: rotateZ(-45deg);
+}
