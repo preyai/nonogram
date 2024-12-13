@@ -1,11 +1,32 @@
 
 export function initNonogram(element: HTMLDivElement) {
     let width = 10;
-    let height = 15;
-    let vertical: number[][] = [[2, 2, 2], [1, 1, 1]];
-    let horizontal: number[][] = [[2, 2], [1, 1, 1]];
+    let height = 9;
+    let vertical: number[][] = [
+        [3, 1],
+        [1, 1, 2],
+        [1, 1, 1],
+        [6, 1],
+        [2, 4],
+        [1, 2, 1, 1],
+        [1, 3, 1],
+        [2, 1],
+        [6]
+    ];
+    let horizontal: number[][] = [
+        [4],
+        [4, 2],
+        [1, 1, 2, 1],
+        [1, 1, 2, 1],
+        [1, 1, 1, 1],
+        [3, 1],
+        [2, 1],
+        [2, 1],
+        [2, 1, 1],
+        [2, 3],
+    ];
 
-    const matrix: (boolean | undefined)[][] = new Array(height).fill(null).map(() => new Array(width));
+    const matrix: (boolean | undefined)[][] = new Array(width).fill(null).map(() => new Array(height));
 
     const getCellClass = (x?: number, y?: number, interactive: boolean = false) => {
         const classes: string[] = ['cell']
@@ -35,13 +56,21 @@ export function initNonogram(element: HTMLDivElement) {
         return a[i] || '';
     }
 
+    const setCellValue = (x: number, y: number, value: boolean) => {
+        const curentValue = matrix[x][y];
+        if (value) {
+            matrix[x][y] = curentValue ? undefined : true;
+        } else {
+            matrix[x][y] = curentValue === false ? undefined : false;
+        }
+    }
+
     const clickHandler1 = (e: Event) => {
         const element = e.target as HTMLDivElement
         const x: number = Number(element.getAttribute('data-x'))
         const y: number = Number(element.getAttribute('data-y'))
 
-        matrix[x][y] = matrix[x][y] ? undefined : true
-
+        setCellValue(x, y, true)
         render()
     }
 
@@ -51,8 +80,7 @@ export function initNonogram(element: HTMLDivElement) {
         const x: number = Number(element.getAttribute('data-x'))
         const y: number = Number(element.getAttribute('data-y'))
 
-        matrix[x][y] = matrix[x][y] === false ? undefined : false
-
+        setCellValue(x, y, false)
         render()
     }
 
@@ -66,7 +94,7 @@ export function initNonogram(element: HTMLDivElement) {
         h += `<div class="horizontal" style='width:${width * 20}px'>`;
         for (let y = 0; y < horizontalMax; y++) {
             for (let x = 0; x < width; x++) {
-                h += `<div class='${getCellClass(x)}'>${getNumber(horizontal[x], horizontalMax - y - 1)}</div>`;
+                h += `<div class='${getCellClass(x, undefined)}'>${getNumber(horizontal[x], horizontalMax - y - 1)}</div>`;
             }
         }
         h += `</div>`;
